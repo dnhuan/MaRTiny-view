@@ -17,7 +17,6 @@ function App() {
     isError,
   } = useQuery(["getIds"], getIds, {
     retry: false,
-    staleTime: 1000 * 60 * 60, // 1 hour
     onCompleted: () => {
       setId(ids[0]);
     },
@@ -40,7 +39,7 @@ function App() {
         onChange={(e) => {
           setId(e.target.value);
         }}
-        value={ids[0]}
+        value={id}
       >
         <option key="All" value="All">
           All
