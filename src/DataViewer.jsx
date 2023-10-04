@@ -10,9 +10,11 @@ function getLatestLog({ queryKey }) {
   ).then((res) => res.json());
 }
 
-async function getLatestImage() {
+async function getLatestImage({ queryKey }) {
+  const [, id] = queryKey;
   const response = await fetch(
-    "https://martinyserver.duckdns.org/lastModifiedImage"
+    "https://martinyserver.duckdns.org/lastModifiedImage" +
+      (id === "All" ? "" : `?id=${id}`)
   );
   if (!response.ok) {
     throw new Error("Failed to fetch latest image");
@@ -49,7 +51,7 @@ function DataViewer({ id }) {
   );
 
   const { data: latestImageURL, dataUpdatedAt: imageUpdatedAt } = useQuery(
-    "latestImage",
+    ["latestImage", id],
     getLatestImage,
     {
       refetchInterval: 5000, // refetch every 2 seconds

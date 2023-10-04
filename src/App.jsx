@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { useQuery } from "react-query";
 import DataViewer from "./DataViewer";
+import { useAtom } from "jotai";
+import { idAtom } from "./atom";
 
 function getIds() {
   return fetch("https://martinyserver.duckdns.org/getIds").then((res) =>
@@ -9,7 +11,7 @@ function getIds() {
 }
 
 function App() {
-  const [id, setId] = useState("All");
+  const [id, setId] = useAtom(idAtom);
 
   const {
     data: ids,
@@ -41,9 +43,6 @@ function App() {
         }}
         value={id}
       >
-        <option key="All" value="All">
-          All
-        </option>
         {ids.map((id) => (
           <option key={id} value={id}>
             {id}
