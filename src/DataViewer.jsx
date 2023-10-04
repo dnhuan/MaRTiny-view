@@ -65,7 +65,7 @@ function DataViewer({ id }) {
   }
 
   return (
-    <div className="m-6 p-6">
+    <div>
       <div>
         Data last updated at: {new Date(dataUpdatedAt).toLocaleTimeString()}
       </div>
