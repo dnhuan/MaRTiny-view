@@ -3,22 +3,17 @@ export function getLatestLog({ queryKey }) {
 	// fetch /getLatest to get the latest log
 	return fetch(
 		"https://martinyserver.duckdns.org/getLatest" +
-			(id === "All" ? "" : `?id=${id}`)
+			(id === "All" || !id ? "" : `?id=${id}`)
 	).then((res) => res.json());
 }
 
-export async function getLatestImageData({ queryKey }) {
+export function getLatestImageData({ queryKey }) {
 	const [, id] = queryKey;
-	const response = await fetch(
-		"https://martinyserver.duckdns.org/lastModifiedImage" +
-			(id === "All" ? "" : `?id=${id}`)
-	);
-	if (!response.ok) {
-		throw new Error("Failed to fetch latest image");
-	}
-	const blob = await response.blob();
-	const imageURL = URL.createObjectURL(blob);
-	return imageURL;
+	// fetch /getLatest to get the latest log
+	return fetch(
+		"https://martinyserver.duckdns.org/getLatestImageData" +
+			(id === "All" || !id ? "" : `?id=${id}`)
+	).then((res) => res.json());
 }
 
 export function getIds() {

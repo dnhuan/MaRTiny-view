@@ -15,7 +15,7 @@ function App() {
 		isError,
 	} = useQuery(["getIds"], getIds, {
 		retry: false,
-		onCompleted: () => {
+		onSuccess: (ids) => {
 			setId(ids[0]);
 		},
 	});
