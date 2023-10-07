@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery } from "react-query";
 import { getLatestLog } from "./api";
 
@@ -20,27 +20,41 @@ function DataRow({ item }) {
 }
 
 function MeteorologicalDataViewer({ id }) {
-	const { data, isLoading, isError, dataUpdatedAt } = useQuery(
+	const { data, isLoading, isError, isRefetching } = useQuery(
 		["latestLog", id],
 		getLatestLog,
 		{
-			refetchInterval: 2000, // refetch every 2 seconds
+			refetchInterval: 5000, // refetch every 5 seconds
 		}
 	);
 
+	const [showRefetching, setShowRefetching] = useState(false);
+
+	useEffect(() => {
+		if (isRefetching) {
+			setShowRefetching(true);
+			setTimeout(() => {
+				setShowRefetching(false);
+			}, 1000);
+		}
+	}, [isRefetching]);
+
 	if (isLoading) {
-		return <div>loading...</div>;
+		return <div>Loading...</div>;
 	}
 
 	if (isError) {
-		return <div>error fetching martinyserver</div>;
+		return <div>Error fetching data</div>;
 	}
 
 	return (
 		<div className="my-6">
-			<div>
-				Data last updated at:{" "}
-				{new Date(dataUpdatedAt).toLocaleTimeString()}
+			<div className="h-8">
+				{showRefetching && (
+					<div>
+						Refreshing... <i className="fa fa-spinner fa-spin"></i>
+					</div>
+				)}
 			</div>
 
 			<div>

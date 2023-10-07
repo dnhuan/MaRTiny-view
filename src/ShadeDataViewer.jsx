@@ -124,11 +124,11 @@ function ShadeDataViewer({ id }) {
 	});
 
 	if (isLoading) {
-		return <div>loading...</div>;
+		return <div>Loading...</div>;
 	}
 
 	if (isError) {
-		return <div>error fetching martinyserver</div>;
+		return <div>Error fetching data</div>;
 	}
 
 	return (
