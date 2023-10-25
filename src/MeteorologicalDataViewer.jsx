@@ -80,18 +80,15 @@ function MeteorologicalDataViewer({ id }) {
 
 			<div className="flex justify-end mb-4">
 				<label className="mr-2">Celsius</label>
-				<div className="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-					<input
-						type="checkbox"
-						name="toggle"
-						id="toggle"
-						className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
-						onChange={handleToggle}
-					/>
-					<label
-						htmlFor="toggle"
-						className="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"
-					></label>
+				<div
+					className="mr-2 select-none cursor-pointer"
+					onClick={handleToggle}
+				>
+					{temperatureType === "Fahrenheit" ? (
+						<i className="fas fa-toggle-on"></i>
+					) : (
+						<i className="fas fa-toggle-off"></i>
+					)}
 				</div>
 				<label>Fahrenheit</label>
 			</div>
