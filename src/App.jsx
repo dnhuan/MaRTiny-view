@@ -14,9 +14,10 @@ function App() {
 		isLoading,
 		isError,
 	} = useQuery(["getIds"], getIds, {
-		retry: false,
 		onSuccess: (ids) => {
-			setId(ids[0]);
+			if (id === "" && ids.length > 0) {
+				setId(ids[0]);
+			}
 		},
 	});
 
