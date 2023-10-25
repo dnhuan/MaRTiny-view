@@ -50,7 +50,9 @@ function App() {
 					</option>
 				))}
 			</select>
-			<ShadeDataViewer id={id} />
+			{window.location.hostname === "martinyview.vercel.app" && (
+				<ShadeDataViewer id={id} />
+			)}
 			<MeteorologicalDataViewer id={id} />
 		</div>
 	);
