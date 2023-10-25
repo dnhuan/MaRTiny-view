@@ -2,19 +2,33 @@ import React, { useState, useEffect } from "react";
 import { useQuery } from "react-query";
 import { getLatestLog } from "./api";
 
-function DataRow({ item }) {
+function DataRow({ item, temperatureType }) {
 	let d = new Date(item.time);
+	let temp = item.Temperature;
+	let globeTemp = item.Dallas1;
+	let tempLabel = "Air Temperature";
+	let globeTempLabel = "Globe Temperature";
+	if (temperatureType === "Fahrenheit") {
+		temp = (item.Temperature * 9) / 5 + 32; // convert temperature to Fahrenheit
+		globeTemp = (item.Dallas1 * 9) / 5 + 32; // convert Globe Temperature to Fahrenheit
+		tempLabel = "Air Temperature";
+		globeTempLabel = "Globe Temperature";
+	}
 	return (
 		// add border using tailwindcss
 		<div className="p-6 border">
-			<p>Temperature: {item.Temperature}</p>
-			<p>Humidity: {item.Humidity}</p>
+			<p>
+				{tempLabel}: {temp.toFixed(2)}{" "}
+				{temperatureType === "Fahrenheit" ? "°F" : "°C"}
+			</p>
+			<p>
+				{globeTempLabel}: {globeTemp.toFixed(2)}{" "}
+				{temperatureType === "Fahrenheit" ? "°F" : "°C"}
+			</p>
+			<p>Humidity: {item.Humidity}%</p>
 			<p>UV Intensity: {item.UV_Intensity}</p>
-			<p>Dallas1: {item.Dallas1}</p>
-			<p>Dallas2: {item.Dallas2}</p>
-			<p>Wind Speed: {item.Wind_Speed}</p>
-			<p>Time: {d.toString()}</p>
-			<p>MAC: {item.mac}</p>
+			<p>Wind Speed: {item.Wind_Speed} m/s</p>
+			<p>Time: {d.toLocaleString("en-US", { timeZoneName: "short" })}</p>
 		</div>
 	);
 }
@@ -29,6 +43,7 @@ function MeteorologicalDataViewer({ id }) {
 	);
 
 	const [showRefetching, setShowRefetching] = useState(false);
+	const [temperatureType, setTemperatureType] = useState("Celsius"); // default temperature type is Celsius
 
 	useEffect(() => {
 		if (isRefetching) {
@@ -47,6 +62,12 @@ function MeteorologicalDataViewer({ id }) {
 		return <div>Error fetching data</div>;
 	}
 
+	const handleToggle = () => {
+		setTemperatureType(
+			temperatureType === "Celsius" ? "Fahrenheit" : "Celsius"
+		); // toggle temperature type between Celsius and Fahrenheit
+	};
+
 	return (
 		<div className="my-6">
 			<div className="h-8">
@@ -57,9 +78,31 @@ function MeteorologicalDataViewer({ id }) {
 				)}
 			</div>
 
+			<div className="flex justify-end mb-4">
+				<label className="mr-2">Celsius</label>
+				<div className="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+					<input
+						type="checkbox"
+						name="toggle"
+						id="toggle"
+						className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
+						onChange={handleToggle}
+					/>
+					<label
+						htmlFor="toggle"
+						className="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"
+					></label>
+				</div>
+				<label>Fahrenheit</label>
+			</div>
+
 			<div>
 				{data.map((item) => (
-					<DataRow key={item._id} item={item} />
+					<DataRow
+						key={item._id}
+						item={item}
+						temperatureType={temperatureType}
+					/>
 				))}
 			</div>
 		</div>
