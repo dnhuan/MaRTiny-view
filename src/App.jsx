@@ -50,8 +50,7 @@ function App() {
 					</option>
 				))}
 			</select>
-			{window.location.hostname ===
-				"martiny-view-git-main-dnhuan.vercel.app" && (
+			{window.location.hostname !== "martinyview.vercel.app" && (
 				<ShadeDataViewer id={id} />
 			)}
 			<MeteorologicalDataViewer id={id} />
