@@ -112,7 +112,7 @@ function ErrorFallback() {
 }
 
 function ShadeDataViewer({ id }) {
-	const [showShadow, setShowShadow] = useState(true);
+	const [showShadow, setShowShadow] = useState(false);
 
 	const {
 		data: imageData,
